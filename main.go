@@ -38,7 +38,7 @@ func main() {
 	defer file.Close()
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
-	writer.Write([]string{"Ano", "Unidade", "Título", "Orientador", "Vertente", "Bolsas"})
+	writer.Write([]string{"Ano", "Unidade", "Título", "Vertente", "Bolsas"})
 
 	// Config Collector with increased TIMEOUT
 	c := colly.NewCollector(
@@ -195,7 +195,6 @@ func parseDWRResponse(body string, writer *csv.Writer) {
 	objetos := reObj.FindAllString(rawArray, -1)
 
 	reTitulo := regexp.MustCompile(`titprjbnf:\s*"(.*?)"`)
-	reOrientador := regexp.MustCompile(`nompescdn:\s*"(.*?)"`)
 	reUnidade := regexp.MustCompile(`nomabvclg:\s*"(.*?)"`)
 	reVertente := regexp.MustCompile(`stavteprj:\s*"(.*?)"`)
 	reAno := regexp.MustCompile(`anoofebnf:\s*"(.*?)"`)
@@ -206,11 +205,10 @@ func parseDWRResponse(body string, writer *csv.Writer) {
 		ano := unquoteUnicode(extract(reAno, obj))
 		unidade := unquoteUnicode(extract(reUnidade, obj))
 		titulo := unquoteUnicode(extract(reTitulo, obj))
-		orientador := unquoteUnicode(extract(reOrientador, obj))
 		vertente := unquoteUnicode(extract(reVertente, obj))
 		bolsas := extract(reBolsas, obj)
 
-		writer.Write([]string{ano, unidade, titulo, orientador, vertente, bolsas})
+		writer.Write([]string{ano, unidade, titulo, vertente, bolsas})
 		count++
 	}
 	writer.Flush()
@@ -243,3 +241,4 @@ func min(a, b int) int {
 	}
 	return b
 }
+
