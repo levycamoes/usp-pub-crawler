@@ -59,4 +59,4 @@ The challenge for the Go crawler was to replicate the DWR security handshake wit
 
 ## ⚠️ Owner disclaimer
 
-This software was developed for strictly educational purposes and public data analysis. Do not use this script to overload the system.
+This software was developed for strictly educational purposes and public data analysis. Do not use this script to overload the system. This script DOES NOT get the full name of the project advisor.
