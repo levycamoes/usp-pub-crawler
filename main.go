@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"scrapper2/config"
+	"scrapper2/pkg/analyzer"
 	"scrapper2/pkg/csvwriter"
 	"scrapper2/pkg/scraper"
 )
@@ -21,7 +22,8 @@ func main() {
 	}
 
 	// Config CSV
-	writer, file, err := csvwriter.NewCSVWriter("bolsas_pub_" + cfg.Year + ".csv")
+	outputFile := "bolsas_pub_" + cfg.Year + ".csv"
+	writer, file, err := csvwriter.NewCSVWriter(outputFile)
 	if err != nil {
 		log.Fatal("Error creating CSV file:", err)
 	}
@@ -31,4 +33,11 @@ func main() {
 	// Create and run scraper
 	s := scraper.NewScraper(cfg, writer)
 	s.Run()
+
+	// Analyze the output file
+	scholarships, err := analyzer.ReadScholarships(outputFile)
+	if err != nil {
+		log.Fatal("Error reading scholarships:", err)
+	}
+	analyzer.AnalyzeScholarships(scholarships)
 }
